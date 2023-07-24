@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User{
+public class      User{
 
     @Column
     @Id
@@ -23,6 +23,7 @@ public class User{
     @Column(unique = true)
     @NotEmpty(message = "Электронная почта не может быть пустой")
     @Email
+    @UniqueEmail
     private String email;
 
     @Column

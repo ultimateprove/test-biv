@@ -80,7 +80,7 @@
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.16
 
 ENV LANGUAGE='en_US:en'
-
+RUN microdnf install -y postgresql
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=185 build/quarkus-app/lib/ /deployments/lib/
@@ -92,4 +92,13 @@ EXPOSE 8080
 USER 185
 ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+ENV QUARKUS_PROFILE="prod"
+
+ENV QUARKUS_DATASOURCE_URL="jdbc:postgresql://localhost:5432/postgres"
+ENV QUARKUS_DATASOURCE_USERNAME="postgres"
+ENV QUARKUS_DATASOURCE_PASSWORD="8964"
+ENV QUARKUS_DATASOURCE_DRIVER="org.postgresql.Driver"
+
+CMD ["java", "-jar", "/deployments/test-biv-1.0-SNAPSHOT.jar"]
 

@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  # Quarkus Application Service
+  quarkus-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - QUARKUS_PROFILE=prod
+      - QUARKUS_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - QUARKUS_DATASOURCE_USERNAME=postgres
+      - QUARKUS_DATASOURCE_PASSWORD=8964
+      - QUARKUS_DATASOURCE_DRIVER=org.postgresql.Driver
+      # Add other environment variables as needed for your Quarkus app
+    networks:
+      - quarkus_network
+
+  # PostgreSQL Service
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=8964
+      # Add other PostgreSQL environment variables if necessary
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - quarkus_network
+
+volumes:
+  postgres_data:
+
+networks:
+  quarkus_network:
